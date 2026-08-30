@@ -4,7 +4,7 @@ from validator import run_validation
 from chatbot import ask_chatbot, wants_visualization
 from report_pdf import build_pdf_report
 
-st.set_page_config(page_title="ValidatIQ — CSV Validator", page_icon="🛡️", layout="wide")
+st.set_page_config(page_title="Data Sentinel — CSV Validator", page_icon="🛡️", layout="wide")
 
 st.markdown("""
 <style>
@@ -20,7 +20,7 @@ h1 { font-weight: 800; color: #1e3a8a; }
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("# 🛡️ ValidatIQ")
+st.markdown("# 🛡️ Data Sentinel")
 st.caption("Real-time CSV validation — structural checks, rule checks, and ML-based anomaly detection.")
 
 # API key comes from YOUR secrets (local .streamlit/secrets.toml, or Streamlit Cloud's Secrets panel).

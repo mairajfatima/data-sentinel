@@ -12,7 +12,7 @@ def build_pdf_report(report: dict) -> bytes:
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Helvetica", "B", 18)
-    pdf.cell(0, 12, "ValidatIQ - Data Validation Report", ln=True)
+    pdf.cell(0, 12, "Data Sentinel - Data Validation Report", ln=True)
     pdf.set_font("Helvetica", "", 11)
 
     stats = report.get("statistics", {})
