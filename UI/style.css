@@ -103,6 +103,17 @@ a { text-decoration: none; color: inherit; }
 .feature-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
 .feature-card p { color: var(--ink-soft); font-size: 0.9rem; }
 
+/* --- App embed --- */
+.app-embed { background: white; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.embed-frame {
+  margin-top: 32px; border-radius: var(--radius); overflow: hidden;
+  border: 1px solid var(--line); box-shadow: 0 24px 60px -24px rgba(15,31,61,0.35);
+  height: 900px; background: var(--bg);
+}
+.embed-frame iframe { width: 100%; height: 100%; border: none; }
+.embed-fallback { margin-top: 16px; font-size: 0.88rem; color: var(--ink-soft); }
+.embed-fallback a { color: var(--navy); font-weight: 600; }
+
 /* --- Footer --- */
 .site-footer { background: var(--navy-deep); color: white; }
 .footer-inner { display: flex; align-items: center; justify-content: space-between; padding: 48px 32px; }
