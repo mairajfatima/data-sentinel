@@ -147,7 +147,19 @@ def detect_anomalies(df: pd.DataFrame, roles: dict, contamination: float = 0.05,
     if len(numeric_cols) < 1:
         return {"message": "No numeric columns available for anomaly detection.", "flagged_rows": [], "pca_points": []}
 
-    numeric_df = df[numeric_cols].fillna(df[numeric_cols].mean())
+    # Clean the data before it ever reaches the ML models:
+    # 1. Replace +inf/-inf with NaN (an infinite value can come from a corrupted source file
+    #    or a division-by-zero upstream) so it can be handled the same way as a missing value.
+    numeric_df = df[numeric_cols].replace([np.inf, -np.inf], np.nan)
+    numeric_df = numeric_df.fillna(numeric_df.mean())
+    # 2. A column that is ENTIRELY empty has a mean of NaN too, so filling NaN with NaN changes
+    #    nothing - such a column carries zero information anyway, so drop it rather than let it
+    #    crash PCA/Isolation Forest downstream.
+    numeric_df = numeric_df.dropna(axis=1)
+    numeric_cols = list(numeric_df.columns)
+    if len(numeric_cols) < 1:
+        return {"message": "No usable numeric columns after cleaning (all were empty or non-finite).", "flagged_rows": [], "pca_points": []}
+
     column_stats = {
         col: {
             "mean": float(numeric_df[col].mean()),
@@ -156,6 +168,10 @@ def detect_anomalies(df: pd.DataFrame, roles: dict, contamination: float = 0.05,
         }
         for col in numeric_cols
     }
+
+    # Guard against a column with zero variance (every value identical) - StandardScaler
+    # itself handles this safely (outputs 0 rather than dividing by zero), but we keep this
+    # comment here as documentation of why "std": 0 doesn't crash anything downstream.
 
     # 1. Scale - mean 0, std 1 for every column, so no single column dominates by magnitude alone
     scaled = StandardScaler().fit_transform(numeric_df)
