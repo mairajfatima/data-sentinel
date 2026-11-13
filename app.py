@@ -1,3 +1,4 @@
+import base64
 import streamlit as st
 import pandas as pd
 from validator import run_validation
@@ -20,7 +21,15 @@ h1 { font-weight: 800; color: #1e3a8a; }
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("# 🛡️ Data Sentinel")
+def show_logo():
+    with open("logo-light.svg", "rb") as f:
+        b64 = base64.b64encode(f.read()).decode()
+    st.markdown(
+        f'<img src="data:image/svg+xml;base64,{b64}" height="48">',
+        unsafe_allow_html=True,
+    )
+
+show_logo()
 st.caption("Real-time CSV validation — structural checks, rule checks, and ML-based anomaly detection.")
 
 # API key comes from YOUR secrets (local .streamlit/secrets.toml, or Streamlit Cloud's Secrets panel).
